@@ -16,6 +16,7 @@ COPY requirements.txt .
 
 # Install Python dependencies to custom directory
 RUN pip install --upgrade pip
+RUN pip install --prefix=/install/deps torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 RUN pip install --prefix=/install/deps -r requirements.txt
 
 

@@ -1,7 +1,6 @@
 import os
 import fitz
 
-
 class FileProcessor:
     def extract_text(self, file_path: str):
         ext = os.path.splitext(file_path)[1].lower()
