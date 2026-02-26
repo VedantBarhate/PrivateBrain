@@ -15,9 +15,11 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # Install Python dependencies to custom directory
-RUN pip install --upgrade pip
-RUN pip install --prefix=/install/deps torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-RUN pip install --prefix=/install/deps -r requirements.txt
+RUN pip install --upgrade pip && \
+    pip install --prefix=/install/deps --no-cache-dir \
+    torch==2.4.1 \
+    -r requirements.txt \
+    --extra-index-url https://download.pytorch.org/whl/cu118
 
 
 # -----------------------

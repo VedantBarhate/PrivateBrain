@@ -2,5 +2,5 @@ fastapi
 uvicorn
 pymupdf
 sentence-transformers
-chromadb
+chromadb-client
 langchain
