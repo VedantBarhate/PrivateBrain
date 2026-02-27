@@ -3,4 +3,4 @@ uvicorn
 pymupdf
 sentence-transformers
 chromadb-client
-langchain
+langchain-text-splitters
