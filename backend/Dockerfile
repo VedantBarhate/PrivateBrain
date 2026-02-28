@@ -29,11 +29,15 @@ FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV HF_HOME=/app/model_cache
 
 WORKDIR /app
 
 # Copy installed dependencies from builder stage
 COPY --from=builder /install/deps /usr/local
+
+# bake embedding model into image
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
 
 # Copy application code
 COPY . .
