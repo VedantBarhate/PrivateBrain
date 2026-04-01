@@ -1,26 +1,36 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from pydantic import BaseModel
 from pipeline import Pipeline
+import shutil
+import os
 
 app = FastAPI()
 pipeline = Pipeline()
 
-class FileRequest(BaseModel):
-    file_path: str
-
+UPLOAD_DIR = "/app/uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @app.get("/health")
 def health():
     return {"status": "Backend running"}
 
 @app.post("/add-file")
-def add_file(request: FileRequest):
-    result = pipeline.add_file(request.file_path)
+async def add_file(file: UploadFile = File(...)):
+    file_location = f"{UPLOAD_DIR}/{file.filename}"
+    with open(file_location, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    result = pipeline.add_file(file_location)
+
     return {"message": result}
 
 @app.delete("/remove-file")
-def remove_file(request: FileRequest):
-    result = pipeline.remove_file(request.file_path)
+def remove_file(filename: str):
+    file_location = f"{UPLOAD_DIR}/{filename}"
+    if not os.path.exists(file_location):
+        raise HTTPException(status_code=404, detail="File not found")
+    result = pipeline.remove_file(file_location)
+    os.remove(file_location)
+
     return {"message": result}
 
 @app.get("/list-files")
