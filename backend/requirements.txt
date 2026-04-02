@@ -4,3 +4,4 @@ pymupdf
 sentence-transformers
 chromadb-client
 langchain-text-splitters
+python-multipart

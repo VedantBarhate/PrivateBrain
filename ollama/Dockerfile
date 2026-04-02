@@ -1,4 +1,5 @@
-FROM ollama/ollama:latest
+# Use the community-maintained CPU-only build
+FROM alpine/ollama:latest
 
 # Set working directory
 WORKDIR /app
