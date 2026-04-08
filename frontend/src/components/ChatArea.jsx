@@ -10,7 +10,7 @@ export default function ChatArea() {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const API_BASE = 'http://pg_ollama:8001';
+  const API_BASE = 'http://localhosts:8001';
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
