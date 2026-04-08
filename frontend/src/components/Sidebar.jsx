@@ -30,22 +30,20 @@ export default function Sidebar() {
       setError("Maximum 5 files allowed.");
       return;
     }
-    
+
     const ext = file.name.split('.').pop().toLowerCase();
     if (!['pdf', 'docx', 'txt'].includes(ext)) {
       setError("Only .pdf, .docx, and .txt files are allowed.");
       return;
     }
-    
+
     setError(null);
     const formData = new FormData();
     formData.append('file', file);
     setUploading(true);
-    
+
     try {
-      await axios.post(`${API_BASE}/add-file`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      await axios.post(`${API_BASE}/add-file`, formData);
       await fetchFiles();
     } catch (e) {
       console.error('Upload failed', e);
@@ -101,7 +99,7 @@ export default function Sidebar() {
         <p className="text-xs text-gray-400 mt-2">Upload up to 5 files (.pdf, .docx, .txt)</p>
       </div>
 
-      <div 
+      <div
         className={`relative flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-xl transition-all duration-300 ease-in-out cursor-pointer mb-6 shrink-0
           ${dragActive ? 'border-indigo-400 bg-indigo-500/10' : 'border-white/10 bg-black/20 hover:border-indigo-400/50'}`}
         onDragEnter={handleDrag}
@@ -109,14 +107,14 @@ export default function Sidebar() {
         onDragOver={handleDrag}
         onDrop={handleDrop}
       >
-        <input 
-          type="file" 
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+        <input
+          type="file"
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
           onChange={handleFileInput}
           disabled={uploading || files.length >= 5}
           accept=".pdf,.docx,.txt"
         />
-        
+
         {uploading ? (
           <div className="flex flex-col items-center gap-3 text-indigo-300">
             <Loader2 className="w-8 h-8 animate-spin" />
@@ -136,7 +134,7 @@ export default function Sidebar() {
 
       <div className="flex-1 overflow-y-auto custom-scrollbar space-y-2 pr-2">
         {files.length === 0 ? (
-           <p className="text-sm text-gray-500 italic text-center mt-4">No documents uploaded.</p>
+          <p className="text-sm text-gray-500 italic text-center mt-4">No documents uploaded.</p>
         ) : (
           files.map((file, i) => {
             const fileName = file.split('/').pop().split('\\').pop();
@@ -146,7 +144,7 @@ export default function Sidebar() {
                   <File className="w-4 h-4 text-indigo-400 shrink-0" />
                   <span className="truncate text-sm text-gray-200" title={fileName}>{fileName}</span>
                 </div>
-                <button 
+                <button
                   onClick={() => handleRemove(file)}
                   className="p-1.5 text-gray-500 hover:text-red-400 hover:bg-red-400/20 rounded-md transition-colors"
                 >

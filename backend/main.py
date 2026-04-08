@@ -1,6 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware # 1. Import the middleware
-from pydantic import BaseModel
 from pipeline import Pipeline
 import shutil
 import os
@@ -17,7 +16,7 @@ origins = [
 # 3. Add the middleware to your app
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,       # Allows requests from localhost:3000
+    allow_origins=["*"],       # Allows requests from localhost:3000
     allow_credentials=True,
     allow_methods=["*"],         # Allows GET, POST, DELETE, etc.
     allow_headers=["*"],

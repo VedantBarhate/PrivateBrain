@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  frontend:
+    container_name: frontend
+    image: pvtbrain_frontend:v1.0
+    ports:
+      - "5173:80"
+    networks:
+      - pvtbrain-network
+
+  pb_rag:
+    container_name: pb_rag
+    image: pvtbrain_rag:v1.0
+    ports:
+      - "8001:8001"
+    networks:
+      - pvtbrain-network
+
+  ollama:
+    container_name: ollama
+    image: pvtbrain_ollama:v1.0
+    ports:
+      - "11434:11434"
+    volumes:
+      - pvtbrain_ollama-data:/root/.ollama
+    networks:
+      - pvtbrain-network
+
+  chroma:
+    container_name: chroma
+    image: pvtbrain_chromadb:v1.0
+    networks:
+      - pvtbrain-network
+
+  pb_backend:
+    container_name: pb_backend
+    image: pvtbrain_backend:v1.4
+    ports:
+      - "8000:8000"
+    networks:
+      - pvtbrain-network
+
+networks:
+  pvtbrain-network:
+    name: pvtbrain-network
+    external: true
+
+volumes:
+  pvtbrain_ollama-data:
+    external: true
