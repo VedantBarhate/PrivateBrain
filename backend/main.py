@@ -1,10 +1,28 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.middleware.cors import CORSMiddleware # 1. Import the middleware
 from pydantic import BaseModel
 from pipeline import Pipeline
 import shutil
 import os
 
 app = FastAPI()
+
+# 2. Define the allowed origins (your frontend URLs)
+origins = [
+    "http://localhost:5173",
+    "http://localhost:8000",
+    # Add other frontend ports/domains here if needed
+]
+
+# 3. Add the middleware to your app
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,       # Allows requests from localhost:3000
+    allow_credentials=True,
+    allow_methods=["*"],         # Allows GET, POST, DELETE, etc.
+    allow_headers=["*"],
+)
+
 pipeline = Pipeline()
 
 UPLOAD_DIR = "/app/uploads"

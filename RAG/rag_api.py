@@ -7,7 +7,8 @@ app = FastAPI()
 
 # 2. Define the allowed origins (your frontend URLs)
 origins = [
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "http://localhost:8001"
 ]
 
 # 3. Add the middleware to your app
