@@ -8,7 +8,7 @@ export default function Sidebar() {
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState(null);
 
-  const API_BASE = 'http://localhost:8000';
+  const API_BASE = import.meta.env.VITE_BACKEND_API_URL;
 
   const fetchFiles = async () => {
     try {

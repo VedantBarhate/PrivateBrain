@@ -3,7 +3,7 @@ version: '3.8'
 services:
   frontend:
     container_name: frontend
-    image: pvtbrain_frontend:v1.0
+    image: pvtbrain_frontend:v1.1
     ports:
       - "5173:80"
     networks:
