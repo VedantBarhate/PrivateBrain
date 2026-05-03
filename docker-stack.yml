@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+
+  frontend:
+    image: vedantbarhate/pvtbrain_frontend:v1.1
+    ports:
+      - "5173:80"
+    networks:
+      - pvtbrain-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+
+  pb_backend:
+    image: vedantbarhate/pvtbrain_backend:v1.4
+    ports:
+      - "8000:8000"
+    networks:
+      - pvtbrain-network
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+
+  pb_rag:
+    image: vedantbarhate/pvtbrain_rag:v1.0
+    ports:
+      - "8001:8001"
+    networks:
+      - pvtbrain-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
+
+  ollama:
+    image: vedantbarhate/pvtbrain_ollama:v1.0
+    ports:
+      - "11434:11434"
+    volumes:
+      - pvtbrain_ollama-data:/root/.ollama
+    networks:
+      - pvtbrain-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  chroma:
+    image: vedantbarhate/pvtbrain_chromadb:v1.0
+    networks:
+      - pvtbrain-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+networks:
+  pvtbrain-network:
+    driver: overlay
+
+volumes:
+  pvtbrain_ollama-data:
