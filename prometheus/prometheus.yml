@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 15s       # scrape metrics every 15 seconds
+
+scrape_configs:
+
+  - job_name: 'cadvisor'     # monitors all docker containers
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+  - job_name: 'backend'      # your FastAPI backend (if you add /metrics endpoint)
+    static_configs:
+      - targets: ['pb_backend:8000']

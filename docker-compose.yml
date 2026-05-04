@@ -41,6 +41,44 @@ services:
     networks:
       - pvtbrain-network
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - pvtbrain-network
+    depends_on:
+      - pb_backend
+      - pb_rag
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - pvtbrain-network
+    volumes:
+      - pvtbrain_grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+  cadvisor:
+    image: gcr.io/google-containers/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - "8080:8080"
+    networks:
+      - pvtbrain-network
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+
 networks:
   pvtbrain-network:
     name: pvtbrain-network
@@ -49,3 +87,4 @@ networks:
 volumes:
   pvtbrain_ollama-data:
     external: true
+  pvtbrain_grafana-data:
