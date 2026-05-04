@@ -67,17 +67,16 @@ services:
       - prometheus
 
   cadvisor:
-    image: gcr.io/google-containers/cadvisor:latest
     container_name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:latest
     ports:
       - "8080:8080"
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - pvtbrain-network
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
+    restart: unless-stopped
 
 networks:
   pvtbrain-network:
